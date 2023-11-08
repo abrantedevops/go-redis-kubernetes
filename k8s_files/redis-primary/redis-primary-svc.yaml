@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: redis-primary
+  name: redis-primary
+  namespace: dev-grk
+spec:
+  ports:
+  - port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: redis-primary
+  type: ClusterIP
+status:
+  loadBalancer: {}

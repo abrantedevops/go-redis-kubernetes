@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: grk-app
+  name: grk-app
+  namespace: dev-grk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grk-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: grk-app
+    spec:
+      containers:
+      - image: go-redis-app:1.0.0
+        name: go-redis
+        resources: {}
+        ports:
+        - containerPort: 8080
+        env:
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: grk-config
+              key: host
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis
+              key: redis-password
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: grk-config
+              key: port
+status: {}

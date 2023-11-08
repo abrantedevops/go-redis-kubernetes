@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: redis-primary
+  name: redis-primary
+  namespace: dev-grk
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: redis-primary
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: redis-primary
+    spec:
+      containers:
+      - image: redis:5.0.7-alpine3.11
+        imagePullPolicy: Always
+        name: redis
+        resources: {}
+        ports:
+        - containerPort: 6379
+        args:
+        - --requirepass
+        - $(REDIS_PASSWORD)
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis
+              key: redis-password
+status: {}
